@@ -1,11 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route ;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PhotoController;
-use Illuminate\Support\Facades\Route ;
-use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WelcomeController;
 
 /*
@@ -164,3 +163,8 @@ Route::resource('photos', PhotoController::class)->only(['index', 'show']);
 
 // Use all method's except for create and store
 Route::resource('photos', PhotoController::class)->except(['create', 'store']);
+
+/*
+ | Displaying from view 
+ */
+Route::get('/greeting', [WelcomeController::class, 'greeting']);
