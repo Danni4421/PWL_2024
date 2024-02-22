@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PhotoController;
 use Illuminate\Support\Facades\Route ;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\WelcomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,22 +25,11 @@ use App\Http\Controllers\UserProfileController;
  | For specific information: 
  | https://laravel.com/docs/10.x/routing#main-content 
  */
-Route::get('/', function () {
-    return 'Selamat Datang';
-});
+Route::get('/', [PageController::class, 'index']);
 
-Route::get('/about', function () {
-    return ( 
-        "<div>
-            <h1>NIM: 2241720155</h1>
-            <h2>Nama: Aji Hamdani Ahmad</h2>
-        </div>"
-    );
-});
+Route::get('/about', [AboutController::class, 'index']);
 
-Route::get('/hello', function () {
-    return 'Hello World';
-});
+Route::get('/hello', [WelcomeController::class,'hello']);
 
 Route::get('/world', function () {
     return 'World';
@@ -57,9 +51,7 @@ Route::get('/posts/{post}/comments/{comment}',
     }
 );
 
-Route::get('/articles/{id}', function ($articleId) {
-    return 'Halaman Artikel dengan ID ' . $articleId;
-});
+Route::get('/articles/{id}', [ArticleController::class, 'index']);
 
 /*
  | Optional Parameters
@@ -78,17 +70,17 @@ Route::get('/user/{name?}', function ($name='Aji Hamdani Ahmad') {
  | https://laravel.com/docs/10.x/routing#named-routes
  */
 
-Route::get('/user/profile', function () {
-    //
-})->name('profile');
+// Route::get('/user/profile', function () {
+//     //
+// })->name('profile');
 
-Route::get(
-    '/user/profile',
-    [UserProfileController::class, 'show']
-)->name('profile');
+// Route::get(
+//     '/user/profile',
+//     [UserProfileController::class, 'show']
+// )->name('profile');
 
-// Generating URL
-$url = route('profile');
+// // Generating URL
+// $url = route('profile');
 
 /*
  | Route Group and Route Prefixes 
@@ -97,23 +89,23 @@ $url = route('profile');
  | https://laravel.com/docs/10.x/routing#route-groups
  | https://laravel.com/docs/10.x/routing#route-group-prefixes
  */
-Route::middleware(['first', 'second'])->group(function () {
-    // It can contain more than one 
+// Route::middleware(['first', 'second'])->group(function () {
+//     // It can contain more than one 
 
-    Route::get('/', function () {
-        //
-    });
+//     Route::get('/', function () {
+//         //
+//     });
     
-    Route::get('/user/profile', function () {
-        //
-    });
+//     Route::get('/user/profile', function () {
+//         //
+//     });
 
-    Route::domain('{acount}.exapmle.com')->group(function () {
-        Route::get('user/{id}', function ($account, $id) {
-            //
-        });
-    });
-});
+//     Route::domain('{acount}.exapmle.com')->group(function () {
+//         Route::get('user/{id}', function ($account, $id) {
+//             //
+//         });
+//     });
+// });
 
 /*
  | Route Middleware
@@ -124,10 +116,10 @@ Route::middleware(['first', 'second'])->group(function () {
  | For specific information: 
  | https://laravel.com/docs/10.x/routing#route-group-middleware
  */
-Route::middleware('auth')->group(function () {
-    Route::get('/user', function () {});
-    // Route::get('/admin', [AdminController::class, 'index']); -> for another example of using route
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/user', function () {});
+//     // Route::get('/admin', [AdminController::class, 'index']); -> for another example of using route
+// });
 
 /*
  | Route Prefixes
@@ -135,10 +127,10 @@ Route::middleware('auth')->group(function () {
  | For more information: 
  | https://laravel.com/docs/10.x/routing#route-group-prefixes 
  */
-Route::prefix('admin')->group(function () {
-    Route::get('/user', function () {});
-    Route::get('/post', function () {});
-});
+// Route::prefix('admin')->group(function () {
+//     Route::get('/user', function () {});
+//     Route::get('/post', function () {});
+// });
 
 /*
  | Route Redirects
@@ -158,3 +150,17 @@ Route::redirect('/here', '/there');
  */
 Route::view('/welcome', 'welcome');
 Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+
+/*
+ | Resource Controllers
+ | 
+ | For more information: 
+ | https://laravel.com/docs/10.x/controllers#resource-controllers 
+ */
+// Route::resource('photos', PhotoController::class);
+
+// Only use route index and show
+Route::resource('photos', PhotoController::class)->only(['index', 'show']);
+
+// Use all method's except for create and store
+Route::resource('photos', PhotoController::class)->except(['create', 'store']);
